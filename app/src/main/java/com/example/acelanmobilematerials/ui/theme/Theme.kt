@@ -15,31 +15,26 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
-    primaryContainer = md_theme_light_primaryContainer,
-    onBackground=md_theme_dark_primaryContainer,
-    surfaceVariant=Color.Black
-    //onPrimaryContainer = md_theme_light_onPrimaryContainer,
-// ..
+    background=md_theme_light_background,
+    surfaceVariant=md_theme_light_surfaceVariant,
+    onSurfaceVariant=md_theme_light_onSurfaceVariant,
 )
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
-    primaryContainer = md_theme_dark_primaryContainer,
-    onBackground=md_theme_light_primaryContainer,
-    surfaceVariant= Color.Black
-    //onPrimaryContainer = md_theme_dark_onPrimaryContainer,
-// ..
+    background=md_theme_dark_background,
+    surfaceVariant=md_theme_dark_surfaceVariant,
+    onSurfaceVariant=md_theme_dark_onSurfaceVariant,
 )
 
 @Composable
 fun AcelanMobileMaterialsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -58,6 +53,7 @@ fun AcelanMobileMaterialsTheme(
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
+
     }
 
     MaterialTheme(
@@ -65,4 +61,17 @@ fun AcelanMobileMaterialsTheme(
         typography = Typography,
         content = content
     )
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = (if (darkTheme) DarkColorScheme.background else LightColorScheme.background) as Color,
+            darkIcons =  (!darkTheme)
+        )
+        systemUiController.setStatusBarColor(
+            color = (if (darkTheme) DarkColorScheme.background else LightColorScheme.background) as Color,
+            darkIcons =  (!darkTheme)
+        )
+    }
+
+
 }

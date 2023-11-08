@@ -20,12 +20,17 @@ val Blue = Color(0xFF4285F4)
 val LightBlue = Color(0xFFD7EFFE)
 
 
-val md_theme_light_primary = Color(0xFF476810)
-val md_theme_light_onPrimary = Color(0xFFFFFFFF)
-val md_theme_light_primaryContainer = Color(0xFFC7F089)
+val md_theme_light_primary = Color(0xFF202124)
+val md_theme_light_background = Color(0xFFD8FCD9)
+val md_theme_light_surfaceVariant = Color(0xFFD7EFFE)
+val md_theme_light_onSurfaceVariant = Color(0xFF008106)
+
 // ..
 // ..
 
-val md_theme_dark_primary = Color(0xFFACD370)
-val md_theme_dark_onPrimary = Color(0xFF213600)
-val md_theme_dark_primaryContainer = Color(0xFF324F00)
+val md_theme_dark_primary = Color(0xFFD7EFFE)
+val md_theme_dark_background = Color(0xFF202124)
+val md_theme_dark_surfaceVariant = Color(0xFF585858)
+val md_theme_dark_onSurfaceVariant = Color(0xFF1F9E03)
+
+val graySurface = Color(0xFF202124)

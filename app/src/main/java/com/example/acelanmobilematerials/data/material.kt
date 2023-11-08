@@ -1,5 +1,7 @@
 package com.example.acelanmobilematerials.data
 
+import java.io.Serializable
+
 data class Material(
     val id: Int,
     val typeMat: Int,
@@ -10,4 +12,4 @@ data class Material(
     val piezoelectricModulus: MutableList<Double>,
     val sourceConst: String
 
-)
+):Serializable
