@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Text
+import com.example.acelanmobilematerials.Screens.ProfileScreen
 import com.example.acelanmobilematerials.data.Material
 import com.example.acelanmobilematerials.ui.theme.AcelanMobileMaterialsTheme
 
@@ -16,7 +17,7 @@ class ProfileActivity : ComponentActivity() {
         setContent {
             AcelanMobileMaterialsTheme {
                 // A surface container using the 'background' color from the theme
-    Text(text = material.title)
+                ProfileScreen(material=material)
             }
         }
     }
