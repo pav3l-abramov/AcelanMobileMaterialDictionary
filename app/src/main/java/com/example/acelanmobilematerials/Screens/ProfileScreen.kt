@@ -1,5 +1,6 @@
 package com.example.acelanmobilematerials.Screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,18 +46,35 @@ fun ProfileScreen(material: Material) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+
         ) {
             item {
                 ProfileHeader(material = material)
             }
             item {
-                Text(text = "C", textAlign = TextAlign.Center)
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Start),
+                        text = "density="+material.densit,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            item {
+                LineString("C")
                 FlowRow(maxItemsInEachRow = 6, modifier = Modifier.padding(horizontal = pad.dp)) {
                     SampleContent("C", 6, 6, width, material.elasticModulus)
                 }
             }
             item {
-                Text(text = "e", textAlign = TextAlign.Center)
+                LineString("e")
                 FlowRow(
                     maxItemsInEachRow = 3,
                     modifier = Modifier.padding(horizontal = (1.5 * width + pad).dp)
@@ -65,9 +83,24 @@ fun ProfileScreen(material: Material) {
                 }
             }
             item {
-                Text(text = "d", textAlign = TextAlign.Center)
+                LineString("d")
                 FlowRow(maxItemsInEachRow = 6, modifier = Modifier.padding(horizontal = pad.dp)) {
                     SampleContent("d", 3, 6, width, material.piezoelectricModulus)
+                }
+            }
+            item {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Start),
+                        text = "source: "+material.sourceConst,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
         }
@@ -78,18 +111,34 @@ fun ProfileScreen(material: Material) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
             item {
                 ProfileHeader(material = material)
             }
             item {
-                Text(text = "C", textAlign = TextAlign.Center)
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Start),
+                        text = "density="+material.densit,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            item {
+                LineString("C")
                 FlowRow(maxItemsInEachRow = 2, modifier = Modifier.padding(horizontal = (width*2+ pad).dp)) {
                     SampleContent("C", 1, 2, width, material.elasticModulus)
                 }
             }
             item {
-                Text(text = "e", textAlign = TextAlign.Center)
+                LineString("e")
                 FlowRow(
                     maxItemsInEachRow = 1,
                     modifier = Modifier.padding(horizontal = (2.5 * width + pad).dp)
@@ -98,7 +147,34 @@ fun ProfileScreen(material: Material) {
                 }
             }
             item {
-                Text(text = "d-not exist", textAlign = TextAlign.Center)
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        text = "d-not exist",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            item {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Start),
+                        text = "source: "+material.sourceConst,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
 
@@ -117,7 +193,7 @@ fun ProfileHeader(material: Material) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = material.title,
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.primary
         )
     }
@@ -125,7 +201,7 @@ fun ProfileHeader(material: Material) {
 }
 
 @Composable
-fun profileContent(material: Material) {
+fun LineString(param: String) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -134,30 +210,11 @@ fun profileContent(material: Material) {
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "C",
+            text =param+"ᵢⱼ",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary
         )
-        SixBySixTable(material.elasticModulus)
     }
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-
-    ) {
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "e",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary
-        )
-        //ThreeByThreeTable(material.dielectricConstant)
-    }
-
-
-    //ThreeBySixTable(material.piezoelectricModulus)
-
 
 }
 
@@ -209,7 +266,7 @@ internal fun SampleContent(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = item[it].toString()
+                    text = item[it].toString(),color = MaterialTheme.colorScheme.primary
                 )
 
             }
@@ -224,13 +281,13 @@ internal fun SampleContent(
                 val colIndex = it % col
                 //Text(it.toString())
                 Text(
-                    text = param
+                    text = param,color = MaterialTheme.colorScheme.primary,
                 )
 
                 Text(
                     text = "${rowIndex + 1}${colIndex + 1}",
                     style = MaterialTheme.typography.bodySmall,
-                    //color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(1.dp)
