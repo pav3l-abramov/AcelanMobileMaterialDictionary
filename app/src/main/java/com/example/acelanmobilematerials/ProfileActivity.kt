@@ -11,22 +11,24 @@ import com.example.acelanmobilematerials.data.Material
 import com.example.acelanmobilematerials.ui.theme.AcelanMobileMaterialsTheme
 
 class ProfileActivity : ComponentActivity() {
-    private val material : Material by lazy { intent?.getSerializableExtra(MATERIAL_ID) as Material  }
+    private val material: Material by lazy { intent?.getSerializableExtra(MATERIAL_ID) as Material }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AcelanMobileMaterialsTheme {
                 // A surface container using the 'background' color from the theme
-                ProfileScreen(material=material)
+                ProfileScreen(material = material)
             }
         }
     }
-    companion object{
-private const val MATERIAL_ID= "material_id"
-        fun newIntent(context:Context, material:Material)= Intent(context,ProfileActivity::class.java).apply {
-            putExtra(MATERIAL_ID,material)
 
-        }
+    companion object {
+        private const val MATERIAL_ID = "material_id"
+        fun newIntent(context: Context, material: Material) =
+            Intent(context, ProfileActivity::class.java).apply {
+                putExtra(MATERIAL_ID, material)
+
+            }
 
     }
 }

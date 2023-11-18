@@ -8,35 +8,66 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.acelanmobilematerials.autorization.data.ApiInterface
+import com.example.acelanmobilematerials.autorization.model.LoginRequest
+import com.example.acelanmobilematerials.autorization.utils.Util.Base
+import com.example.acelanmobilematerials.autorization.utils.Util.Email
+import com.example.acelanmobilematerials.autorization.utils.Util.Password
 import com.example.acelanmobilematerials.data.Material
+import retrofit2.Retrofit
+
+@Composable
+fun logAce() {
+    //try take token
+    val retrofit = Retrofit.Builder().baseUrl(Base).build()
+    val apiInterface = retrofit.create(ApiInterface::class.java)
+
+    val loginRequest = LoginRequest(Email, Password)
+    //val call = apiInterface.login(loginRequest)//crash
+
+    /* call.enqueue(object : Callback<LoginResponse> {
+         override fun onResponse(
+             call: Call<LoginResponse>, response: Response<LoginResponse>
+         ) {
+             if (response.isSuccessful) {
+                 val token = response.body()?.token
+                 // Store the token for later use
+
+             } else {
+                 // Handle unsuccessful response
+
+             }
+         }
+
+         override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+             // Handle failure
+         }
+     })
+
+    */
+}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(material: Material) {
+    logAce()
     val pad = 10;
     val width = with(LocalDensity.current) {
         ((LocalConfiguration.current.screenWidthDp - pad * 2) / 6)
@@ -61,7 +92,7 @@ fun ProfileScreen(material: Material) {
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Start),
-                        text = "density="+material.densit,
+                        text = "density=" + material.densit,
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -97,16 +128,14 @@ fun ProfileScreen(material: Material) {
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Start),
-                        text = "source: "+material.sourceConst,
+                        text = "source: " + material.sourceConst,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
         }
-    }
-    else
-    {
+    } else {
         //для изотропных материалов
         LazyColumn(
             modifier = Modifier
@@ -125,7 +154,7 @@ fun ProfileScreen(material: Material) {
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Start),
-                        text = "density="+material.densit,
+                        text = "density=" + material.densit,
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -133,7 +162,10 @@ fun ProfileScreen(material: Material) {
             }
             item {
                 LineString("C")
-                FlowRow(maxItemsInEachRow = 2, modifier = Modifier.padding(horizontal = (width*2+ pad).dp)) {
+                FlowRow(
+                    maxItemsInEachRow = 2,
+                    modifier = Modifier.padding(horizontal = (width * 2 + pad).dp)
+                ) {
                     SampleContent("C", 1, 2, width, material.elasticModulus)
                 }
             }
@@ -170,13 +202,14 @@ fun ProfileScreen(material: Material) {
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Start),
-                        text = "source: "+material.sourceConst,
+                        text = "source: " + material.sourceConst,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
         }
+
 
     }
 }
@@ -210,7 +243,7 @@ fun LineString(param: String) {
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text =param+"ᵢⱼ",
+            text = param + "ᵢⱼ",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary
         )
@@ -251,11 +284,7 @@ fun SixBySixTable(item: MutableList<Double>) {
 
 @Composable
 internal fun SampleContent(
-    param: String,
-    row: Int,
-    col: Int,
-    widt: Int,
-    item: MutableList<Double>
+    param: String, row: Int, col: Int, widt: Int, item: MutableList<Double>
 ) {
     repeat(row * col) {
         if (item.size > it) {
@@ -266,7 +295,7 @@ internal fun SampleContent(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = item[it].toString(),color = MaterialTheme.colorScheme.primary
+                    text = item[it].toString(), color = MaterialTheme.colorScheme.primary
                 )
 
             }
@@ -281,7 +310,7 @@ internal fun SampleContent(
                 val colIndex = it % col
                 //Text(it.toString())
                 Text(
-                    text = param,color = MaterialTheme.colorScheme.primary,
+                    text = param, color = MaterialTheme.colorScheme.primary,
                 )
 
                 Text(

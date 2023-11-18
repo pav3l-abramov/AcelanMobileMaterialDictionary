@@ -50,11 +50,11 @@ android {
 }
 
 dependencies {
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -72,5 +72,16 @@ dependencies {
 
 
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    // retrofit2
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //moshi
+    //implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    //implementation("com.squareup.moshi:moshi-adapters:1.15.0")
+    //implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    //implementation("io.kotlintest:kotlintest:2.0.7")
+
+    //implementation("io.springfox:springfox-boot-starter:3.0.0")
+
 
 }
