@@ -1,5 +1,7 @@
 package com.example.acelanmobilematerials.Screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,48 +28,30 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.example.acelanmobilematerials.autorization.data.ApiInterface
-import com.example.acelanmobilematerials.autorization.model.LoginRequest
-import com.example.acelanmobilematerials.autorization.utils.Util.Base
-import com.example.acelanmobilematerials.autorization.utils.Util.Email
-import com.example.acelanmobilematerials.autorization.utils.Util.Password
+//import com.example.acelanmobilematerials.autorization.model.LoginRequest
+//import com.example.acelanmobilematerials.autorization.model.LoginResponse
 import com.example.acelanmobilematerials.data.Material
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
-@Composable
-fun logAce() {
-    //try take token
-    val retrofit = Retrofit.Builder().baseUrl(Base).build()
-    val apiInterface = retrofit.create(ApiInterface::class.java)
-
-    val loginRequest = LoginRequest(Email, Password)
-    //val call = apiInterface.login(loginRequest)//crash
-
-    /* call.enqueue(object : Callback<LoginResponse> {
-         override fun onResponse(
-             call: Call<LoginResponse>, response: Response<LoginResponse>
-         ) {
-             if (response.isSuccessful) {
-                 val token = response.body()?.token
-                 // Store the token for later use
-
-             } else {
-                 // Handle unsuccessful response
-
-             }
-         }
-
-         override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-             // Handle failure
-         }
-     })
-
-    */
-}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(material: Material) {
-    logAce()
+
     val pad = 10;
     val width = with(LocalDensity.current) {
         ((LocalConfiguration.current.screenWidthDp - pad * 2) / 6)
@@ -250,38 +234,6 @@ fun LineString(param: String) {
     }
 
 }
-
-
-@Composable
-fun SixBySixTable(item: MutableList<Double>) {
-
-    val data = (0..35).toList()
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(6),
-        contentPadding = PaddingValues(all = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-
-        items(data) { index ->
-            val rowIndex = index / 6
-            val colIndex = index % 6
-            Text(
-                text = "C"
-            )
-            Box(
-                modifier = Modifier.padding(12.dp)
-            ) {
-                Text(
-                    text = "${rowIndex + 1}${colIndex + 1}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-
-    }
-}
-
 @Composable
 internal fun SampleContent(
     param: String, row: Int, col: Int, widt: Int, item: MutableList<Double>

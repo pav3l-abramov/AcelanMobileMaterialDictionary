@@ -1,4 +1,4 @@
-package com.example.acelanmobilematerials.Screens
+package com.example.acelanmobilematerials.Screens.RecyclerScreen
 
 import android.security.identity.AccessControlProfile
 import android.text.Layout.Alignment

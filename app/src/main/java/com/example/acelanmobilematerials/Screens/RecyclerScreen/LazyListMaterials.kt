@@ -1,7 +1,5 @@
-package com.example.acelanmobilematerials.Screens
+package com.example.acelanmobilematerials.Screens.RecyclerScreen
 
-import android.annotation.SuppressLint
-import android.security.identity.AccessControlProfile
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +16,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
