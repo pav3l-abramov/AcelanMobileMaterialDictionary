@@ -74,7 +74,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
     // retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.5.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //moshi
     //implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
@@ -85,7 +85,7 @@ dependencies {
     //implementation("io.springfox:springfox-boot-starter:3.0.0")
 
     // Okhttp3 for the POST requests
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     // Gson to convert raw JSON to pretty JSON
 
@@ -93,7 +93,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
 
     implementation("org.json:json:20220320")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     implementation ("com.google.code.gson:gson:2.9.0")
 
     testImplementation(kotlin("test"))

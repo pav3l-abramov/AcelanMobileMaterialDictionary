@@ -1,26 +1,11 @@
-/*
-Copyright 2022 Google LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- */
-
-package com.example.makeitso.screens.login
+package com.example.acelanmobilematerials.Screens
 
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -68,19 +53,22 @@ import org.json.JSONTokener
 import retrofit2.Retrofit
 
 
-
-
 @Composable
-fun LoginScreen(  navigateToRecycler: (Users)->Unit
+fun SignUpScreen(
+    navigateToRecycler: (Users) -> Unit
 
 ) {
 
-    val checkOnline = remember { mutableStateOf(false) }
+
     val context = LocalContext.current
     val email = remember { mutableStateOf(TextFieldValue()) }
-    val emailErrorState = remember { mutableStateOf(false) }
-    val passwordErrorState = remember { mutableStateOf(false) }
-    val password = remember { mutableStateOf(TextFieldValue()) }
+    val emailErrorStateVal = remember { mutableStateOf(false) }
+    val checkOnline = remember { mutableStateOf(false) }
+    val emailErrorStateIn = remember { mutableStateOf(false) }
+    val passwordErrorStateVal = remember { mutableStateOf(false) }
+    val passwordErrorStateRep = remember { mutableStateOf(false) }
+    val password1 = remember { mutableStateOf(TextFieldValue()) }
+    val password2 = remember { mutableStateOf(TextFieldValue()) }
 
     Column(
         modifier = Modifier
@@ -89,8 +77,8 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
         verticalArrangement = Arrangement.Center,
     ) {
 
-      Image(
-            painter = painterResource(id =if (isSystemInDarkTheme()) com.example.acelanmobilematerials.R.drawable.logo_dark_theme else com.example.acelanmobilematerials.R.drawable.logo_light_theme ),
+        Image(
+            painter = painterResource(id = if (isSystemInDarkTheme()) com.example.acelanmobilematerials.R.drawable.logo_dark_theme else com.example.acelanmobilematerials.R.drawable.logo_light_theme),
             contentDescription = "",
             modifier = Modifier
                 .size(200.dp)
@@ -106,10 +94,10 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
             }
 
             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-                append(" I")
+                append(" U")
             }
             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                append("n")
+                append("p")
             }
         }, fontSize = 30.sp)
         Spacer(Modifier.size(16.dp))
@@ -117,32 +105,38 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
             singleLine= true,
             value = email.value,
             onValueChange = {
-                if (emailErrorState.value) {
-                    emailErrorState.value = false
+                if (emailErrorStateVal.value) {
+                    emailErrorStateVal.value = false
+                }
+                if (!email.value.text.isEmailValid()) {
+                    emailErrorStateIn.value = false
                 }
                 email.value = it
             },
-            isError = emailErrorState.value,
+            isError = emailErrorStateVal.value||emailErrorStateIn.value,
             modifier = Modifier.fillMaxWidth(),
             label = {
                 Text(text = "Enter Email")
             },
         )
-        if (emailErrorState.value) {
+        if (emailErrorStateVal.value) {
             Text(text = "Required", color = Color.Red)
+        }
+        if (emailErrorStateIn.value) {
+            Text(text = "This is an incorrect email", color = Color.Red)
         }
         Spacer(Modifier.size(16.dp))
         val passwordVisibility = remember { mutableStateOf(true) }
         OutlinedTextField(
             singleLine= true,
-            value = password.value,
+            value = password1.value,
             onValueChange = {
-                if (passwordErrorState.value) {
-                    passwordErrorState.value = false
+                if (passwordErrorStateVal.value) {
+                    passwordErrorStateVal.value = false
                 }
-                password.value = it
+                password1.value = it
             },
-            isError = passwordErrorState.value,
+            isError = passwordErrorStateVal.value,
             modifier = Modifier.fillMaxWidth(),
 
             trailingIcon = {
@@ -157,14 +151,48 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
                 Text(text = "Enter Password")
             },
         )
-        if (passwordErrorState.value) {
+        if (passwordErrorStateVal.value) {
             Text(text = "Required", color = Color.Red)
+        }
+        Spacer(Modifier.size(16.dp))
+        OutlinedTextField(
+            singleLine= true,
+            value = password2.value,
+            onValueChange = {
+                if (passwordErrorStateVal.value) {
+                    passwordErrorStateVal.value = false
+                }
+                if (password2.value.text ==password1.value.text) {
+                    passwordErrorStateRep.value = false
+                }
+                password2.value = it
+            },
+            isError = passwordErrorStateVal.value||passwordErrorStateRep.value,
+            modifier = Modifier.fillMaxWidth(),
+
+            trailingIcon = {
+                IconButton(onClick = {
+                    passwordVisibility.value = !passwordVisibility.value
+                }) {
+
+                }
+            },
+            //visualTransformation = if (passwordVisibility.value) PasswordVisualTransformation() else VisualTransformation.None
+            label = {
+                Text(text = "Repeat Password")
+            },
+        )
+        if (passwordErrorStateVal.value) {
+            Text(text = "Required", color = Color.Red)
+        }
+        if (passwordErrorStateRep.value) {
+            Text(text = "your passwords don't match", color = Color.Red)
         }
         Spacer(Modifier.size(16.dp))
         Button(
             onClick = {
                 when {
-                    !isOnline(context) -> {
+                    !isOnline(context)-> {
                         checkOnline.value = true
                         Toast.makeText(
                             context,
@@ -173,11 +201,22 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
                         ).show()
                     }
                     email.value.text.isEmpty() -> {
-                        emailErrorState.value = true
+                        emailErrorStateVal.value = true
                     }
-                    password.value.text.isEmpty() -> {
-                        passwordErrorState.value = true
+
+                    password1.value.text.isEmpty() -> {
+                        passwordErrorStateVal.value = true
                     }
+                    password2.value.text.isEmpty() -> {
+                        passwordErrorStateVal.value = true
+                    }
+                    !email.value.text.isEmailValid()-> {
+                        emailErrorStateIn.value = true
+                    }
+                    password1.value.text !=password2.value.text -> {
+                        passwordErrorStateRep.value = true
+                    }
+
 
                     else -> {
                         val retrofit = Retrofit.Builder()
@@ -190,13 +229,14 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
                         // Create JSON using JSONObject
                         val jsonObject = JSONObject()
                         jsonObject.put("email", email.value.text)
-                        jsonObject.put("password", password.value.text)
+                        jsonObject.put("password", password2.value.text)
 
                         // Convert JSONObject to String
                         val jsonObjectString = jsonObject.toString()
 
                         // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
-                        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+                        val requestBody =
+                            jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
                         CoroutineScope(Dispatchers.IO).launch {
 
@@ -214,17 +254,20 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
                                                 ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
                                         )
                                     )
-                                    passwordErrorState.value = false
-                                    emailErrorState.value = false
-                                    checkOnline.value = false
-                                    val jsonObject = JSONTokener(prettyJson).nextValue() as JSONObject
+                                    passwordErrorStateVal.value = false
+                                    passwordErrorStateRep.value = false
+                                    emailErrorStateVal.value = false
+                                    emailErrorStateIn.value = false
+                                    checkOnline.value= false
+                                    val jsonObject =
+                                        JSONTokener(prettyJson).nextValue() as JSONObject
                                     val token = jsonObject.getString("token")
                                     Log.d("Pretty Printed JSON :", token)
-                                    val users=Users(email.value.text,password.value.text,token)
+                                    val users = Users(email.value.text, password2.value.text, token)
                                     navigateToRecycler(users)
                                     Toast.makeText(
                                         context,
-                                        "Login successfully",
+                                        "Sign Up successfully",
                                         Toast.LENGTH_SHORT
                                     ).show()
 
@@ -250,22 +293,16 @@ fun LoginScreen(  navigateToRecycler: (Users)->Unit
 
             },
             content = {
-                Text(text = "Login")
+                Text(text = "Create Account")
             },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(Modifier.size(16.dp))
-        Button(
-            onClick = {
-                context.startActivity(Intent(context, SignUp::class.java))
 
-            },
-            content = {
-                Text(text = "Sign up")
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
     }
+}
+
+fun String.isEmailValid(): Boolean {
+    return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 fun isOnline(context: Context): Boolean {
     val connectivityManager =
@@ -288,62 +325,3 @@ fun isOnline(context: Context): Boolean {
     }
     return false
 }
-
-
-/*
-fun rawJSON(email:String,password:String): Boolean {
-
-    // Create Retrofit
-    val retrofit = Retrofit.Builder()
-        .baseUrl("https://acelan.ru")
-        .build()
-
-    // Create Service
-    val service = retrofit.create(ApiInterface::class.java)
-
-    // Create JSON using JSONObject
-    val jsonObject = JSONObject()
-    jsonObject.put("email", email)
-    jsonObject.put("password", password)
-
-    // Convert JSONObject to String
-    val jsonObjectString = jsonObject.toString()
-
-    // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
-    val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-
-    CoroutineScope(Dispatchers.IO).launch {
-
-        // Do the POST request and get response
-        val response = service.login(requestBody)
-
-        withContext(Dispatchers.Main) {
-            if (response.isSuccessful) {
-
-                // Convert raw JSON to pretty JSON using GSON library
-                val gson = GsonBuilder().setPrettyPrinting().create()
-                val prettyJson = gson.toJson(
-                    JsonParser.parseString(
-                        response.body()
-                            ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-                    )
-                )
-
-                Log.d("Pretty Printed JSON :", prettyJson)
-                check=true
-
-            } else {
-
-                Log.e("RETROFIT_ERROR", response.code().toString())
-                check=false
-
-            }
-
-        }
-
-    }
-    return(check)
-}
-
-
- */

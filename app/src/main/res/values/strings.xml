@@ -2,4 +2,5 @@
     <string name="app_name">AcelanMobileMaterials</string>
     <string name="title_activity_profile_activiry">ProfileActiviry</string>
     <string name="title_activity_recycler_view">RecyclerView</string>
+    <string name="title_activity_sign_up">SignUp</string>
 </resources>
